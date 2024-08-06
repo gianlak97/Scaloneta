@@ -1,0 +1,19 @@
+.fondo{
+    background-color: rgb(212, 148, 100);
+}
+.titulo{
+    text-align: center;
+    font-size: 80px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: rgba(52,175,178,1);
+    background-color: whitesmoke;
+}
+.scaloneta{
+    width: 100vw;
+}
+.cuestionario{
+    margin-top: 100px;
+}
+.li{
+    background-color: aqua;
+}
