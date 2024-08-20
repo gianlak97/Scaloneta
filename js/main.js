@@ -60,8 +60,8 @@ preguntas.push(
     }
 );
 
-let preguntaActual = 0;
-let calificacion = 0;
+let preguntaActual = parseInt(localStorage.getItem('preguntaActual')) || 0;
+let calificacion = parseInt(localStorage.getItem('calificacion')) || 0;
 
 function mostrarPregunta() {
     const quizContainer = document.getElementById('quiz-container');
@@ -93,23 +93,38 @@ function mostrarPregunta() {
 
 function verificarRespuesta(index) {
     const preguntaObj = preguntas[preguntaActual];
+    let mensaje = '';
+    let icono = '';
+
     if (index === preguntaObj.respuestaCorrecta) {
         calificacion++;
-        alert('Muy bien, seguí así.');
+        mensaje = '¡Muy bien, seguí así!';
+        icono = 'success';
     } else {
-        alert('Muy mal, pero bueno sigamos.');
+        mensaje = 'Muy mal, pero bueno sigamos.';
+        icono = 'error';
         if (preguntaActual <= 5) {
             calificacion--; // Resta puntos en las últimas preguntas
         }
     }
 
-    preguntaActual++;
-    mostrarPregunta(); // Mostrar la siguiente pregunta automáticamente
+    Swal.fire({
+        title: mensaje,
+        icon: icono,
+        confirmButtonText: 'Continuar'
+    }).then(() => {
+        preguntaActual++;
+
+        // Guardar estado en localStorage
+        localStorage.setItem('preguntaActual', preguntaActual);
+        localStorage.setItem('calificacion', calificacion);
+
+        mostrarPregunta();
+    });
 }
 
 function mostrarResultado() {
     const quizContainer = document.getElementById('quiz-container');
-    
 
     let resultadoMensaje = '';
     if (calificacion >= 7) {
@@ -123,6 +138,10 @@ function mostrarResultado() {
     const resultadoTexto = document.createElement('h2');
     resultadoTexto.textContent = resultadoMensaje;
     quizContainer.append(resultadoTexto);
+
+    // Limpiar el estado guardado después de mostrar el resultado
+    localStorage.removeItem('preguntaActual');
+    localStorage.removeItem('calificacion');
 }
 
 // Iniciar el cuestionario
