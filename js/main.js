@@ -1,67 +1,18 @@
-const preguntas = [
-    {
-        pregunta: "¿Quién metió el gol de la final de la Copa América 2024?",
-        opciones: ["Lionel Messi", "Angel Di Maria", "Lautaro Martinez"],
-        respuestaCorrecta: 2
-    },
-    {
-        pregunta: "¿Quién lleva el número 11 en la camiseta?",
-        opciones: ["Cuti Romero", "Angel Di Maria", "Nicolas Gonzalez"],
-        respuestaCorrecta: 1
-    },
-    {
-        pregunta: "¿A quién le dicen 'El Motorcito'?",
-        opciones: ["Lionel Messi", "Lisandro Martinez", "Rodrigo De Paul"],
-        respuestaCorrecta: 2
-    },
-    {
-        pregunta: "¿Cuántos penales atajó el Dibu contra Ecuador?",
-        opciones: ["atajó solo un penal", "atajó dos penales", "atajó tres penales"],
-        respuestaCorrecta: 1
-    },
-    {
-        pregunta: "Incluyendo la última copa América, ¿Cuántas copas tiene Argentina?",
-        opciones: ["16", "18", "19"],
-        respuestaCorrecta: 0
-    },
-    {
-        pregunta: "¿Qué dupla fue la ganadora del torneo de truco en la Copa América 2024?",
-        opciones: ["El Cuti Romero y Licha Martinez", "Leandro Paredes y Nico Otamendi", "Lionel Messi y Rodrigo De Paul"],
-        respuestaCorrecta: 2
-    },
-    {
-        pregunta: "¿Cuántos penales lleva atajados 'El Dibu Martinez' en la Selección?",
-        opciones: ["6", "8", "10"],
-        respuestaCorrecta: 1
-    },
-    {
-        pregunta: "¿Cuántos goles lleva Messi, el máximo goleador de la historia de Argentina?",
-        opciones: ["109 goles", "112 goles", "120 goles"],
-        respuestaCorrecta: 0
-    },
-    {
-        pregunta: "¿Cuántos partidos invictos tuvo Argentina antes del partido contra Arabia Saudita en el mundial 2022?",
-        opciones: ["34 partidos invictos", "36 partidos invictos", "38 partidos invictos"],
-        respuestaCorrecta: 1
-    },
-    {
-        pregunta: "¿En qué año debutó Messi en la Selección Argentina?",
-        opciones: ["En 2005", "En 2006", "En 2007"],
-        respuestaCorrecta: 0
-    }
-];
-
-// Más preguntas usando push
-preguntas.push(
-    {
-        pregunta:"3 jugadores de la selección mayor jugaron ¿Quienes fueron?",
-        opciones:["Otamendi, Julian Alvarez y Rulli", "Messi, De Paul y Di Maria", "El Cuti, El Dibu y Paredes"],
-        respuestaCorrecta: 0
-    }
-);
-
+let preguntas = [];
 let preguntaActual = parseInt(localStorage.getItem('preguntaActual')) || 0;
 let calificacion = parseInt(localStorage.getItem('calificacion')) || 0;
+
+async function obtenerPreguntas() {
+    try {
+        const respuesta = await fetch('./json/preguntas.json');
+
+        preguntas = await respuesta.json();
+        mostrarPregunta(); // Iniciar el cuestionario una vez que las preguntas se han cargado
+    } catch (error) {
+        console.error('Error al cargar las preguntas:', error);
+        alert('Hubo un problema al cargar las preguntas. Inténtalo más tarde.');
+    }
+}
 
 function mostrarPregunta() {
     const quizContainer = document.getElementById('quiz-container');
@@ -144,5 +95,5 @@ function mostrarResultado() {
     localStorage.removeItem('calificacion');
 }
 
-// Iniciar el cuestionario
-mostrarPregunta();
+// Iniciar el cuestionario obteniendo las preguntas
+obtenerPreguntas();
